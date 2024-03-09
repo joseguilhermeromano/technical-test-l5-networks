@@ -11,6 +11,7 @@ class MonitorController
      *
      */
     public function index(){
+        header("Content-type: application/json; charset=utf-8");
 
         $monitor = new StateMonitor();
 

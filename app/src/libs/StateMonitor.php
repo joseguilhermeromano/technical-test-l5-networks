@@ -25,36 +25,37 @@ class StateMonitor{
         $this->filas = file($pathFileFilas);
     }
 
-    protected function getStatusRamais()
+    protected function getStatusAgentsRamais()
     {
-        $status = [];
+        $data = [];
 
         foreach ($this->filas as $linhas) {
 
             if (strstr($linhas, 'SIP/')) {
+                $linha = explode(' ', trim($linhas));
+                list(, $ramal) = explode('/', $linha[0]);
+
+                $data[$ramal] = ['agent' => end($linha)];
+
                 if (strstr($linhas, '(Ring)')) {
-                    $linha = explode(' ', trim($linhas));
-                    list(, $ramal) = explode('/', $linha[0]);
-                    $status[$ramal] = ['status' => 'chamando'];
+                    $data[$ramal]['status'] = 'chamando';
                 } elseif (strstr($linhas, '(In use)')) {
-                    $linha = explode(' ', trim($linhas));
-                    list(, $ramal) = explode('/', $linha[0]);
-                    $status[$ramal] = ['status' => 'ocupado'];
-                } elseif (strstr($linhas, '(Not in use)')) {
-                    $linha = explode(' ', trim($linhas));
-                    list(, $ramal) = explode('/', $linha[0]);
-                    $status[$ramal] = ['status' => 'disponivel'];
+                    $data[$ramal]['status'] = 'ocupado';
+                } elseif(strstr($linhas, '(paused)')){
+                    $data[$ramal]['status'] = 'pausado';
+                }elseif (strstr($linhas, '(Not in use)')) {
+                    $data[$ramal]['status'] = 'disponivel';
+                } elseif (strstr($linhas, '(Unavailable)')) {
+                    $data[$ramal]['status'] = 'indisponivel';
                 }
             }
         }
 
-        return $status;
+        return $data;
     }
 
     public function generate()
     {
-        header("Content-type: application/json; charset=utf-8");
-
         $response = [];
 
         foreach ($this->ramais as $linhas) {
@@ -65,46 +66,20 @@ class StateMonitor{
 
             $values = array_values($linha);
 
-            $this->getInfoRamaisOff($response, $values);
             $this->getInfoRamaisOn($response, $values);
+            $this->getInfoRamaisOff($response, $values);
         }
 
         return json_encode($response, JSON_FORCE_OBJECT);
-    }
-
-    protected function getInfoRamaisOff(&$infoRamais, $values)
-    {
-        $fieldStatus = trim($values[4]) == 'UNKNOWN';
-        $fieldHost = trim($values[1]) == '(Unspecified)';
-
-        $statusRamais =  $this->getStatusRamais();
-
-        if(empty($statusRamais)) {
-            throw new Exception("Cannot get status of 'ramais'");
-        }
-
-        if($fieldHost && $fieldStatus){
-            list($name, $username) = explode('/', $values[0]);
-            $infoRamais[$name] = array(
-                'nome' => $name,
-                'ramal' => $username,
-                'online' => false,
-                'status' => $statusRamais[$name]['status']
-            );
-            return $infoRamais;
-        }
-        
-
-        return $infoRamais;
     }
 
     protected function getInfoRamaisOn(&$infoRamais, $values)
     {
         $fieldStatusIsOk = trim($values[5]) == "OK"; 
 
-        $statusRamais =  $this->getStatusRamais();
+        $data =  $this->getStatusAgentsRamais();
 
-        if(empty($statusRamais)) {
+        if(empty($data)) {
             throw new Exception("Cannot get status of 'ramais'");
         }
 
@@ -114,11 +89,38 @@ class StateMonitor{
                 'nome' => $name,
                 'ramal' => $username,
                 'online' => true,
-                'status' => isset($statusRamais[$name]['status']) ? $statusRamais[$name]['status'] : ''
+                'status' => isset($data[$name]['status']) ? $data[$name]['status'] : '', 
+                'agente' => $data[$name]['agent']
             );
 
             return $infoRamais;
         }
+
+        return $infoRamais;
+    }
+
+    protected function getInfoRamaisOff(&$infoRamais, $values)
+    {
+        $fieldStatus = trim(end($values)) == 'UNKNOWN';
+        $fieldHost = trim($values[1]) == '(Unspecified)';
+        $data = $this->getStatusAgentsRamais();
+
+        if(empty($data)) {
+            throw new Exception("Cannot get status of 'ramais'");
+        }
+
+        if($fieldHost && $fieldStatus){
+            list($name, $username) = explode('/', $values[0]);
+            $infoRamais[$name] = array(
+                'nome' => $name,
+                'ramal' => $username,
+                'online' => false,
+                'status' =>  isset($data[$name]['status']) ? $data[$name]['status'] : '',
+                'agente' => $data[$name]['agent']
+            );
+            return $infoRamais;
+        }
+        
 
         return $infoRamais;
     }

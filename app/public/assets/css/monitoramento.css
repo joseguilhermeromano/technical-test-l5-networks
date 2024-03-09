@@ -10,6 +10,10 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
+.cinza{
+    background-color: #F2F4F4;
+}
+
 .ocupado {
     width: 15px;
     height: 15px;
@@ -23,6 +27,20 @@
     border-radius: 50%;
     background-color: #ff0000;
     animation: piscar 1s linear infinite;
+}
+
+.pausado{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: orange;
+}
+
+.indisponivel {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #ABB2B9;
 }
 
 @keyframes piscar {
