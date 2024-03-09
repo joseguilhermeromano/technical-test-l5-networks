@@ -1,3 +1,4 @@
 .vscode
 supervisor.log
 supervisor.pid
+vendor/

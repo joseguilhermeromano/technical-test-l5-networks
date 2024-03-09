@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__DIR__) . "/vendor/autoload.php";
+
 session_start();
 
 spl_autoload_register(function($className) {
@@ -16,12 +18,6 @@ spl_autoload_register(function($className) {
 
 use Source\Middlewares\RouterMiddleware;
 
-
-include_once "../src/routes/routes.php";
-
-$method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
 $router = new RouterMiddleware();
 
-$router->execute($apiRoutes, $method, $path);
+$router->execute();
