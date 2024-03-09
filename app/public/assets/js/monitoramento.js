@@ -1,5 +1,5 @@
 $.ajax({
-    url: "http://localhost/lib/ramais.php",
+    url: "http://callcenter.app.br/api/ramais",
     type: "GET",
     success: function(data){                
         for(let i in data){

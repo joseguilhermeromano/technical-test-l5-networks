@@ -3,8 +3,8 @@
  * Você deverá transformar em uma classe
  */
 header("Content-type: application/json; charset=utf-8");
-$ramais = file('ramais');
-$filas = file('filas');
+$ramais = file(__dir__.'/ramais');
+$filas = file(__dir__.'/filas');
 $status_ramais = array();
 foreach($filas as $linhas){
     if(strstr($linhas,'SIP/')){
@@ -27,9 +27,11 @@ foreach($filas as $linhas){
 }
 $info_ramais = array();
 foreach($ramais as $linhas){
-    $linha = array_filter(explode(' ',$linhas));
+    $linha = array_filter(explode(' ', $linhas), function($value) {
+        return $value !== '' && $value !== null;
+    });
     $arr = array_values($linha);
-    if(trim($arr[1]) == '(Unspecified)' AND trim($arr[4]) == 'UNKNOWN'){        
+    if(trim($arr[1]) == '(Unspecified)' && trim($arr[4]) == 'UNKNOWN'){        
         list($name,$username) = explode('/',$arr[0]);        
         $info_ramais[$name] = array(
             'nome' => $name,
@@ -38,13 +40,14 @@ foreach($ramais as $linhas){
             'status' => $status_ramais[$name]['status']
         );
     }
+    
     if(trim($arr[5]) == "OK"){        
         list($name,$username) = explode('/',$arr[0]);
         $info_ramais[$name] = array(
             'nome' => $name,
             'ramal' => $username,
             'online' => true,
-            'status' => $status_ramais[$name]['status']
+            'status' => isset($status_ramais[$name]['status']) ? $status_ramais[$name]['status'] : ''
         );
     }
 }
