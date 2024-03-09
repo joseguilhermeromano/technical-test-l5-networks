@@ -4,20 +4,19 @@ namespace Source\Database;
 
 use PDOException;
 use PDO;
-use Symfony\Component\Dotenv\Dotenv;
 
 class Database{
     private $connection;
 
     public function __construct(){
 
-        $dotenv = new Dotenv();
-        $dotenv->load(dirname(__DIR__).'/../.env');
-        $driver = $_ENV['DB_CONNECTION'];
-        $host = $_ENV['DB_HOST'];
-        $dbName = $_ENV['DB_DATABASE'];
-        $username = $_ENV['DB_USERNAME'];
-        $password = $_ENV['DB_PASSWORD'];
+        $phinx = require __dir__.'/../../phinx.php';
+        $credentials = $phinx['environments']['production'];
+        $driver = $credentials['adapter'];
+        $host = $credentials['host'];
+        $dbName = $credentials['name'];
+        $username = $credentials['user'];
+        $password = $credentials['pass'];
 
         try{
             $this->connection = new PDO("$driver:host=$host;dbname=$dbName", $username, $password, array(
@@ -63,7 +62,13 @@ class Database{
     public function update(string $sql, array $params){
         try{
             $stmt = $this->connection->prepare($sql);
-            return $stmt->execute($params);
+            $stmt->execute($params);
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            }
+            
+            return true;
         }catch(PDOException $e){
             echo 'Error update: ' . $e->getMessage();
         }

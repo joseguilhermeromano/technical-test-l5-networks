@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__DIR__) . "/vendor/autoload.php";
-
 session_start();
 
 spl_autoload_register(function($className) {

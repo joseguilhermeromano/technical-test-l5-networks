@@ -38,15 +38,15 @@ class StateMonitor{
                 $data[$ramal] = ['agent' => end($linha)];
 
                 if (strstr($linhas, '(Ring)')) {
-                    $data[$ramal]['status'] = 'chamando';
+                    $data[$ramal]['status'] = 'calling';
                 } elseif (strstr($linhas, '(In use)')) {
-                    $data[$ramal]['status'] = 'ocupado';
+                    $data[$ramal]['status'] = 'busy';
                 } elseif(strstr($linhas, '(paused)')){
-                    $data[$ramal]['status'] = 'pausado';
+                    $data[$ramal]['status'] = 'paused';
                 }elseif (strstr($linhas, '(Not in use)')) {
-                    $data[$ramal]['status'] = 'disponivel';
+                    $data[$ramal]['status'] = 'available';
                 } elseif (strstr($linhas, '(Unavailable)')) {
-                    $data[$ramal]['status'] = 'indisponivel';
+                    $data[$ramal]['status'] = 'unavailable';
                 }
             }
         }
@@ -54,7 +54,7 @@ class StateMonitor{
         return $data;
     }
 
-    public function generate()
+    public function generate(): array
     {
         $response = [];
 
@@ -70,7 +70,7 @@ class StateMonitor{
             $this->getInfoRamaisOff($response, $values);
         }
 
-        return json_encode($response, JSON_FORCE_OBJECT);
+        return $response;
     }
 
     protected function getInfoRamaisOn(&$infoRamais, $values)
@@ -86,11 +86,11 @@ class StateMonitor{
         if($fieldStatusIsOk){
             list($name, $username) = explode('/', $values[0]);
             $infoRamais[$name] = array(
-                'nome' => $name,
-                'ramal' => $username,
+                'name' => $name,
+                'extension' => $username,
                 'online' => true,
-                'status' => isset($data[$name]['status']) ? $data[$name]['status'] : '', 
-                'agente' => $data[$name]['agent']
+                'status' => $data[$name]['status'],
+                'agent' => $data[$name]['agent']
             );
 
             return $infoRamais;
@@ -112,11 +112,11 @@ class StateMonitor{
         if($fieldHost && $fieldStatus){
             list($name, $username) = explode('/', $values[0]);
             $infoRamais[$name] = array(
-                'nome' => $name,
-                'ramal' => $username,
+                'name' => $name,
+                'extension' => $username,
                 'online' => false,
-                'status' =>  isset($data[$name]['status']) ? $data[$name]['status'] : '',
-                'agente' => $data[$name]['agent']
+                'status' =>  $data[$name]['status'],
+                'agent' => $data[$name]['agent']
             );
             return $infoRamais;
         }

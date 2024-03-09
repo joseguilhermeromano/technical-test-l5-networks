@@ -3,16 +3,16 @@ $.ajax({
     type: "GET",
     success: function(data){                
         for(let i in data){
-            $grayClass = !data[i].online ? 'cinza' : '';
-            $('#cartoes').append(`<div class="cartao ${$grayClass}">
-                                <div>${data[i].nome}</div>
-                                <div>${data[i].agente}</div>
-                                <span class="${data[i].status} icone-posicao"></span>
+            $grayClass = !data[i].online ? 'grey' : '';
+            $('#cards').append(`<div class="card ${$grayClass}">
+                                <div>${data[i].name}</div>
+                                <div>${data[i].agent}</div>
+                                <span class="${data[i].status} icon-position"></span>
                               </div>`)
         }
         
     },
     error: function(){
-        console.log("Errouu!")
+        console.log("Error!")
     }
 });

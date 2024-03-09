@@ -40,7 +40,7 @@ class Eloquent{
 
     public static function find(int $id){
         $table = static::$table;
-        $sql = "SELECT * FROM $table WHERE id=? AND deleted_at is NULL";
+        $sql = "SELECT * FROM $table WHERE id=?";
         $database = new Database();
         $data = $database->find($sql, [$id]);
         return ($data) ? new static($data) : null;
@@ -146,7 +146,7 @@ class Eloquent{
         $values = array_values($data);
 
         foreach ($data as $key => $value) {
-            $stringWhere .= "$key = ? AND ";
+            $stringWhere .= " $key = ? AND ";
             $values[] = $value;
         }
 
@@ -155,7 +155,10 @@ class Eloquent{
         $sql = "UPDATE $table SET $stringKeys, updated_at = now() WHERE $stringWhere";
         $database = new Database();
         $result = $database->update($sql, $values);
-        return ($result) ? self::find($result["id"]) : null;
+
+        if($result === false) {
+            self::create($data);
+        }
     }
 
     protected function belongsTo(string $className){
