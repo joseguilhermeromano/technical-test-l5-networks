@@ -65,21 +65,17 @@ class StateMonitor{
 
             $values = array_values($linha);
 
-            $ramaisOff = $this->getInfoRamaisOff($values);
-            $ramaisOn = $this->getInfoRamaisOn($response, $values);
-
-            if(!empty($ramaisOff)) array_push($response, $ramaisOff);
-            if(!empty($ramaisOn)) array_push($response, $ramaisOn);
+            $this->getInfoRamaisOff($response, $values);
+            $this->getInfoRamaisOn($response, $values);
         }
 
-        return json_encode($response);
+        return json_encode($response, JSON_FORCE_OBJECT);
     }
 
-    protected function getInfoRamaisOff($values)
+    protected function getInfoRamaisOff(&$infoRamais, $values)
     {
         $fieldStatus = trim($values[4]) == 'UNKNOWN';
         $fieldHost = trim($values[1]) == '(Unspecified)';
-        $infoRamais = [];
 
         $statusRamais =  $this->getStatusRamais();
 
@@ -102,7 +98,7 @@ class StateMonitor{
         return $infoRamais;
     }
 
-    protected function getInfoRamaisOn($infoRamais, $values)
+    protected function getInfoRamaisOn(&$infoRamais, $values)
     {
         $fieldStatusIsOk = trim($values[5]) == "OK"; 
 
