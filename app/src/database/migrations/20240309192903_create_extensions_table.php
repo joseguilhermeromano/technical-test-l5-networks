@@ -23,6 +23,7 @@ final class CreateExtensionsTable extends AbstractMigration
         $table->addColumn('name', 'string')
               ->addColumn('extension', 'string')
               ->addColumn('agent', 'string')
+              ->addColumn('ip_address', 'string')
               ->addColumn('online', 'boolean', ['default' => false])
               ->addColumn('status', 'enum', [
                 'values' => ['available','calling', 'busy', 'paused', 'unavailable'],
