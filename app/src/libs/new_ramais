@@ -1,0 +1,7 @@
+Name/username              Host            Dyn Nat ACL Port     Status
+7000/7000                  (Unspecified)   D   N       -        UNKNOWN
+7001/7001                  181.219.125.7   D   N       42368    OK (20 ms)
+7002/7002                  181.219.125.7   D   N       42369    OK (33 ms)
+7003/7003                  181.219.125.7   D   N       42370    OK (33 ms)
+7004/7004                  (Unspecified)   D   N       -        UNKNOWN
+5 sip peers [Monitored: 3 online, 2 offline Unmonitored: 0 online, 0 offline]

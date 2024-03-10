@@ -130,7 +130,7 @@ class Eloquent{
         return ($result) ? new static($result) : self::create($data);
     }
 
-    public static function updateOrCreate(array $data){
+    public static function updateOrCreate(array $keys, array $data){
         $table = static::$table;
 
         
@@ -143,11 +143,12 @@ class Eloquent{
         $stringKeys = rtrim($stringKeys, ', ');
 
         $stringWhere = '';
+
         $values = array_values($data);
 
-        foreach ($data as $key => $value) {
-            $stringWhere .= " $key = ? AND ";
-            $values[] = $value;
+        for ($i = 0; $i < count($keys); $i++) {
+            $stringWhere .= " $keys[$i] = ? AND ";
+            $values[] = $data[$keys[$i]];
         }
 
         $stringWhere = rtrim($stringWhere, ' AND ');

@@ -7,10 +7,11 @@ class StateMonitor{
     private $ramais;
     private $filas;
 
-    public function __construct()
+    public function __construct(
+            $pathFileFilas = __DIR__.'/filas', 
+            $pathFileRamais = __DIR__.'/ramais'
+        )
     {
-        $pathFileRamais = __DIR__.'/ramais';
-        $pathFileFilas = __DIR__.'/filas';
 
         if (!file_exists($pathFileRamais)) {
             throw new Exception("File 'ramais' not found");
@@ -54,7 +55,7 @@ class StateMonitor{
         return $data;
     }
 
-    public function generate(): array
+    public function getState(): array
     {
         $response = [];
 
