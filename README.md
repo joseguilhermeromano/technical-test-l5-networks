@@ -76,6 +76,8 @@ Clique para ver as imagens:
 
 [Tela de Monitor de Ramais](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_telaapp.png)
 
+[Banco de Dados](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_bd.png)
+
 [Retorno da API ramais](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_api.png)
 
 [Resultados Coverage PHPUnit](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_coverage.png)
