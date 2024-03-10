@@ -63,11 +63,8 @@ Ele logará e logo verá a base de dados sandbox (nela tem todas as tabelas do p
 ## Resultados obtidos
 
 ![Tela de Monitor de Ramais](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_telaapp.png)
-
 ![Retorno da API ramais](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_api.png)
-
 ![Resultados Coverage PHPUnit](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_coverage.png)
-
 ![Resultados do Sonar](https://github.com/joseguilhermeromano/technical-test-l5-networks/tree/master/app/public/assets/img/resultados_sonar.png)
 
 ## Muito Obrigado!!!
