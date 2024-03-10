@@ -90,7 +90,7 @@ class StateMonitor{
                 'name' => $name,
                 'extension' => $username,
                 'online' => true,
-                'ip_address' => $values[1],
+                'ip_address' => trim($values[1]),
                 'status' => $data[$name]['status'],
                 'agent' => $data[$name]['agent']
             );
@@ -117,7 +117,7 @@ class StateMonitor{
                 'name' => $name,
                 'extension' => $username,
                 'online' => false,
-                'ip_address' => $values[1],
+                'ip_address' => trim($values[1]),
                 'status' =>  $data[$name]['status'],
                 'agent' => $data[$name]['agent']
             );

@@ -1,0 +1,33 @@
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+
+    <!-- Configuração dos testes -->
+    <testsuites>
+        <testsuite name="App Test Suite">
+            <directory>/var/www/app/src/tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">/var/www/app/src</directory>
+        </include>
+        <!-- Excluindo diretório de testes -->
+        <exclude>
+            <directory>/var/www/app/src/tests</directory>
+            <file>/var/www/app/src/libs/ramais.php</file>
+            <file>/var/www/app/src/libs/ramais</file>
+            <file>/var/www/app/src/libs/filas</file>
+            <file>/var/www/app/src/libs/new_ramais</file>
+            <file>/var/www/app/src/libs/new_filas</file>
+        </exclude>
+    </coverage>
+
+</phpunit>

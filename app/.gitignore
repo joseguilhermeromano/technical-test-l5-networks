@@ -2,3 +2,4 @@
 supervisor.log
 supervisor.pid
 vendor/
+.scannerwork/

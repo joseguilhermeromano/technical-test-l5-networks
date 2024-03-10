@@ -6,7 +6,6 @@ ARG PHP_VERSION=8.3-fpm-alpine
 
 FROM php:${PHP_VERSION}
 
-
 # Bibliotecas do PHP
 RUN apk --update add  zlib-dev \
     libzip-dev \
@@ -40,8 +39,6 @@ RUN docker-php-ext-install pdo pdo_mysql session xml bcmath opcache curl calenda
 RUN docker-php-ext-install zip simplexml pcntl gd fileinfo
 
 WORKDIR /var/www
-
-COPY . .
 
 EXPOSE 9004
 
